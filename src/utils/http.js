@@ -1,7 +1,7 @@
 /* 为什么要携带token？
 很多接口中都需要携带token才可以正确获取数据 */
 
-/* config属性介绍
+/* config（完整请求配置对象）属性介绍
 {
   // 基础属性
   url: '/api/users',     // 请求地址
@@ -35,18 +35,48 @@ import 'element-plus/theme-chalk/el-message.css';
 //创建实例定义基础配置config
 const httpInstance = axios.create({
     baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
-    timeout: 8000
+    timeout: 8000,
+    //全局默认json头请求，不用每次paot单独配置
+    headers: {
+      'Content-Type': 'applicantion/json'
+    }
 })
+
+//优化1：重复请求拦截，通过axios自带的cancelToken来终止网络请求
+const pendingRequest = new Map();
+//请求创建与删除检查
+let generateReqKey= (config) => {
+    //设计规则：把请求方式 + 地址接口 + 参数请求 拼接成唯一字符
+    const {method, url, params, data} = config;
+    return [method, url, JSON.stringify(params), JSON.stringify(data)].join('&');
+}
+
+let removeReqKey = (config) => {
+    const reqKey = generateReqKey(config);
+    if(!pendingRequest.has(removeReqKey)) {
+        //获取对应的cancel函数并取消旧请求
+        const cancelFunc = pendingRequest.get(reqKey);
+        cancelFunc("取消重复请求");
+        pendingRequest.delete(reqKey);
+    }
+}
 
 //拦截器
 // 添加请求拦截器
 httpInstance.interceptors.request.use( (config) => {
+    //优化1：发送新请求前，先取消同类型的未完成就旧请求
+    removeReqKey(config);
+    //优化1：创建当前请求对应的内部cancel函数，并存入map
+    config.cancelToken = new axios.CancelToken((cancel) => {
+      pendingRequest.set(generateReqKey(config), cancel);
+    })
+
     //1.获取userStore中的token数据
-    const userStore = useUserStore()
-    const token = userStore.userInfo.token
+    const userStore = useUserStore();
+    const token = userStore.userInfo.token;
     //2.根据后端要求拼接token数据
     if(token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   }, function (error) {
@@ -57,22 +87,29 @@ httpInstance.interceptors.request.use( (config) => {
 // 添加响应拦截器
 httpInstance.interceptors.response.use(
     //成功直接获取接口信息
-    res => res, 
+    res => {
+        //优化1：成功删除
+        removeReqKey(res.config);
+        return res;
+    }, 
     //统一错误提示
     e  => {
-    const userStore = useUserStore()
-    ElMessage({
-      type: 'warning',
-      message: e.response.data.message
-    })
-    //401token失效处理
-    if (e.response.status === 401) {
-      //1.清除本地用户数据
-      userStore.clearUserInfo()
-      //2.跳转至登录页
-      router.push('/login')
-    }
-    return Promise.reject(e);
-  });
+        //优化1：失败删除
+        removeReqKey(res.config);
+
+        const userStore = useUserStore()
+        ElMessage({
+          type: 'warning',
+          message: e.response.data.message
+        })
+        //401token失效处理
+        if (e.response.status === 401) {
+          //1.清除本地用户数据
+          userStore.clearUserInfo()
+          //2.跳转至登录页
+          router.push('/login')
+        }
+        return Promise.reject(e);
+    });
 
 export default httpInstance
