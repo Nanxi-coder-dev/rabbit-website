@@ -34,7 +34,7 @@ import 'element-plus/theme-chalk/el-message.css';
 
 //创建实例定义基础配置config
 const httpInstance = axios.create({
-    baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
+    baseURL: '/api', //vite代理转发
     timeout: 8000,
     //全局默认json头请求，不用每次paot单独配置
     headers: {
