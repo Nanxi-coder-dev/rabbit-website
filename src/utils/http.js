@@ -34,7 +34,7 @@ import 'element-plus/theme-chalk/el-message.css';
 
 //创建实例定义基础配置config
 const httpInstance = axios.create({
-    baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
+    baseURL: 'api',
     timeout: 8000
 })
 

@@ -24,7 +24,15 @@ export default defineConfig({
   server: {
     historyApiFallback: true,
     port: 5173,
-    allowedHosts: ['686e255c.r35.cpolar.top']
+    allowedHosts: ['686e255c.r35.cpolar.top'],
+    //新增代理配置
+    proxy: {
+      '/api': {
+        target: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   },
   resolve: {
     alias: {
