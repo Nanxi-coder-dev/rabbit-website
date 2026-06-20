@@ -10,7 +10,7 @@ const categoryDate = ref({})
 const route = useRoute()
 const getCategoryData = async() => {
   const res = await getCategoryFilterAPI(route.params.id)
-  categoryDate.value = res.data.result
+  categoryDate.value = res.result
 }
 onMounted( () => getCategoryData() )
 
@@ -24,7 +24,7 @@ const reqData = ref({
 })
 const getGoodList = async() => {
   const res = await getSubCategoryAPI(reqData.value)
-  goodList.value = res.data.result.items
+  goodList.value = res.result.items
 }
 onMounted( () => getGoodList() )
 
@@ -41,9 +41,9 @@ const load = async() => {
   reqData.value.page++
   //获取下一页的数据
   const res = await getSubCategoryAPI(reqData.value)
-  goodList.value = [...goodList.value, ...res.data.result.items]
+  goodList.value = [...goodList.value, ...res.result.items]
   //停止监听 当items为空时
-  if(!res.data.result.items.length) {
+  if(!res.result.items.length) {
     disabled.value = true
   }
 }

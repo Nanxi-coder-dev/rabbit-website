@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
     const getUserInfo = async({ account, password }) => {
 
         const res = await loginAPI({ account, password })
-        userInfo.value = res.data.result
+        userInfo.value = res.result
         //合并购物车数据
         /* arr.map(callback(currentValue[, index[, array]])[, thisArg])
         将符合条件的元素作为一个新数组返回，不改变原数组 */

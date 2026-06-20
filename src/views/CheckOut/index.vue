@@ -10,7 +10,7 @@ const checkInfo = ref({})  // 订单对象
 const curAddress = ref({})  // 默认址对象
 const getCheckOutInfo = async () => {
     const res = await getCheckOutInfoAPI()
-    checkInfo.value = res.data.result
+    checkInfo.value = res.result
     //显示默认地址
     //通过匹配userAddress中isDeafult为0的一项作为默认地址
     /* array.find(callback(element[, index[, array]])[, thisArg])
@@ -61,7 +61,7 @@ const createOrder = async () => {
     }),
     addressId: curAddress.value.id
   })
-  const orderId = res.data.result.id
+  const orderId = res.result.id
   router.push({
     path: '/pay',
     query: {

@@ -11,7 +11,7 @@ const route = useRoute()
 const cartStore = useCartStore()
 const getGoods = async() => {
     const res = await getDetailAPI(route.params.id)
-    goods.value = res.data.result
+    goods.value = res.result
 }
 onMounted( () => getGoods() )
 

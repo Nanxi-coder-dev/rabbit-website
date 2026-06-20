@@ -26,7 +26,7 @@ const getHotList = async() => {
         //通过父组件传来的props中包含的type值来适配列表
         type: props.hotType
     })
-    hotList.value = res.data.result
+    hotList.value = res.result
 }
 onMounted(() => getHotList())
 </script>

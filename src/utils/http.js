@@ -38,14 +38,14 @@ const httpInstance = axios.create({
     timeout: 8000,
     //全局默认json头请求，不用每次paot单独配置
     headers: {
-      'Content-Type': 'applicantion/json'
+      'Content-Type': 'application/json'
     }
 })
 
 //优化1：重复请求拦截，通过axios自带的cancelToken来终止网络请求
 const pendingRequest = new Map();
 //请求创建与删除检查
-let generateReqKey= (config) => {
+let generateReqKey= (config = {}) => {
     //设计规则：把请求方式 + 地址接口 + 参数请求 拼接成唯一字符
     const {method, url, params, data} = config;
     return [method, url, JSON.stringify(params), JSON.stringify(data)].join('&');
@@ -53,7 +53,7 @@ let generateReqKey= (config) => {
 
 let removeReqKey = (config) => {
     const reqKey = generateReqKey(config);
-    if(!pendingRequest.has(removeReqKey)) {
+    if(pendingRequest.has(reqKey)) {
         //获取对应的cancel函数并取消旧请求
         const cancelFunc = pendingRequest.get(reqKey);
         cancelFunc("取消重复请求");
@@ -79,9 +79,9 @@ httpInstance.interceptors.request.use( (config) => {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-  }, function (error) {
+  }, function (e) {
     // 对请求错误做些什么
-    return Promise.reject(error);
+    return Promise.reject(e);
   });
 
 // 添加响应拦截器
@@ -90,12 +90,17 @@ httpInstance.interceptors.response.use(
     res => {
         //优化1：成功删除
         removeReqKey(res.config);
-        return res;
+        return res.data;
     }, 
     //统一错误提示
     e  => {
         //优化1：失败删除
-        removeReqKey(res.config);
+        if(axios.isCancel) {
+          return Promise.reject(e);
+        }
+        if(e.config) {
+          removeReqKey(e.config);
+        }
 
         const userStore = useUserStore()
         ElMessage({
