@@ -22,9 +22,9 @@ export const lazyPlugin = {
                         rootMargin: '200px 0px',
                         threshold: 0.01
                     }
-                )
+                );
                 // 组件销毁时手动停止监听，防止泄露内存
-                el._stopObserver = stop
+                el._stopObserver = stop;
             },
             unmounted(el) {
                 // 页面销毁清除监听
