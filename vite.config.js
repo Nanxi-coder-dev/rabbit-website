@@ -27,11 +27,11 @@ export default defineConfig({
     allowedHosts: ['686e255c.r35.cpolar.top'],
     proxy: {
     '/api': { // 必须加前置斜杠
-      target: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
+      target: 'https://pcapi-xiaotuxian-front-devtest.itheima.net',
       changeOrigin: true,
       rewrite: (path) => path.replace(/^\/api/, '')
+      }
     }
-  }
   },
   resolve: {
     alias: {

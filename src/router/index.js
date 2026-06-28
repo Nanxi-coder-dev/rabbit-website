@@ -15,6 +15,7 @@ import PayBack  from '@/views/Pay/PayBack.vue'
 import Member from '@/views/Member/index.vue'
 import MemberInfo from '@/views/Member/components/MemberInfo.vue'
 import MemberOrder from '@/views/Member/components/MemberOrder.vue'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
