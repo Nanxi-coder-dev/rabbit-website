@@ -30,15 +30,21 @@ const fomartPayState = (payState) => {
 // 订单列表
 const orderList = ref([])
 const total = ref(0)
+const loading = ref(false)
 const params = ref({
     orderState: 0,
     page: 1,
     pageSize: 2
 })
 const getOrderList = async () => {
-  const res = await getUserOrder(params.value)
-  orderList.value = res.result.items
-  total.value = res.result.counts
+  loading.value = true
+  try {
+    const res = await getUserOrder(params.value)
+    orderList.value = res.result.items
+    total.value = res.result.counts
+  } finally {
+    loading.value = false
+  }
 }
 onMounted( () => getOrderList() )
 
@@ -62,7 +68,7 @@ const pageChange = (page) => {
       <!-- tab切换 -->
       <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label" />
 
-      <div class="main-container">
+      <div class="main-container" v-loading="loading">
         <div class="holder-container" v-if="orderList.length === 0">
           <el-empty description="暂无订单数据" />
         </div>
