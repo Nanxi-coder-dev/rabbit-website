@@ -40,3 +40,6 @@ __screenshots__/
 
 # 忽略数字开头的文档文件（保留 README.md）
 [0-9]*.md
+
+# cpolar
+cpolar/
