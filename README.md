@@ -46,6 +46,7 @@ npm run dev
 
 ## 目录结构
 
+```bash
 src/
 ├── api/ # 接口封装（21 个业务接口）
 ├── assets/ # 静态资源
@@ -57,7 +58,8 @@ src/
 ├── styles/ # 全局样式（scss）
 ├── utils/ # 工具函数（Axios 封装）
 ├── views/ # 页面组件
-└── App.vue
+└── App.
+```
 
 ## 未来计划
 
