@@ -20,7 +20,7 @@ export const useCartStore = defineStore('cart', () => {
         //1.获取购物车列表接口
         const res = await findNewCartListAPI()
         //2.更新本地购物车列表
-        cartList.value = res.data.result
+        cartList.value = res.result
     }
 
     //2.定义操作购物车的action方法

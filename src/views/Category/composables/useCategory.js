@@ -9,7 +9,7 @@ export const useCategory = () => {
     //通过使用默认值，使得第一次可以成功加载路由
     const getCategory = async(id = route.params.id) => {
         const res = await getCategoryAPI(id)
-        categoryData.value = res.data.result
+        categoryData.value = res.result
     }
 
     onMounted(() => {

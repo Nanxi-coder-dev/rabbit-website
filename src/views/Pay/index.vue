@@ -12,7 +12,7 @@ const { formatTime, start } = useCountDown()
 const getPayInfo = async () => {
     
       const res = await getOrderAPI(route.query.id)
-      payInfo.value = res.data.result
+      payInfo.value = res.result
       //初始化倒计时秒数
       start(payInfo.value.countdown)
     } 

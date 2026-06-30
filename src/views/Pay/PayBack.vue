@@ -15,7 +15,7 @@ const getOrderInfo = async () => {
       }
 
     const res = await getOrderAPI(route.query.orderId)
-    orderInfo.value = res.data.result
+    orderInfo.value = res.result
   } catch (err) {
         console.error('获取订单失败', err)
         orderInfo.value = { payMoney: 0 }

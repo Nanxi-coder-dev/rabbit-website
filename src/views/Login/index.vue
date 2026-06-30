@@ -49,14 +49,16 @@ const doLogin = () => {
   const { account, password } = form.value
   //调用实例方法validate并传入回调函数
   formRef.value.validate(async(valid) => {
+      console.log('表单校验结果valid：', valid)
       //valid: 所有表单校验均通过才为ture
       //通过valid作为判断条件来执行登录逻辑
       if (valid) {
+          console.log('进入登录逻辑')
           await userStore.getUserInfo({ account, password })
           //1.提示用户登陆成功
           ElMessage({ type: 'success', message: '登陆成功'})
           //2.跳转首页
-          router.replace({path: '/'})
+           router.replace({path: '/'})
       }
   })
 }

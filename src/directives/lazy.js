@@ -17,7 +17,20 @@ export const lazyPlugin = {
                             stop() //执行stop()使得第一次监听成功就结束，避免造成浪费
                         }
                     },
-                )
+                    {
+                        // 提前200px预加载，不会等滚到才加载
+                        rootMargin: '200px 0px',
+                        threshold: 0.01
+                    }
+                );
+                // 组件销毁时手动停止监听，防止泄露内存
+                el._stopObserver = stop;
+            },
+            unmounted(el) {
+                // 页面销毁清除监听
+                if(el._stopObserver) {
+                    el._stopObserver()
+                }
             }
         })
 
