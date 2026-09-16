@@ -1,14 +1,18 @@
 import httpInstance from "@/utils/http";
 
-//获取banner
+/**
+ * @description: 获取banner轮播图
+ * @param {Object} params { distributionSite: 1=首页 2=商品页 }
+ * @return {*}
+ */
 export const getBannerAPI = (params = {}) => {
-    // 默认为1（首页），商品页为2
-    const { distributionSite = '1' } = params
-    return httpInstance({
-        url: '/home/banner',
-        params: { distributionSite }
-    })
-}
+  // 默认为1（首页），商品页为2
+  const { distributionSite = "1" } = params;
+  return httpInstance({
+    url: "/home/banner",
+    params: { distributionSite },
+  });
+};
 
 /**
  * @description: 获取新鲜好物
@@ -16,7 +20,7 @@ export const getBannerAPI = (params = {}) => {
  * @return {*}
  */
 export function findNewAPI() {
-    return httpInstance.get('/home/new')
+  return httpInstance.get("/home/new");
 }
 
 /**
@@ -25,8 +29,8 @@ export function findNewAPI() {
  * @return {*}
  */
 export const getHotAPI = () => {
-  return  httpInstance.get('home/hot')
-}
+  return httpInstance.get("home/hot");
+};
 
 /**
  * @description: 获取所有商品模块
@@ -34,6 +38,5 @@ export const getHotAPI = () => {
  * @return {*}
  */
 export const getGoodsAPI = () => {
-    return httpInstance.get('home/goods')
-}
-
+  return httpInstance.get("home/goods");
+};
