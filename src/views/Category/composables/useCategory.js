@@ -17,7 +17,6 @@ export const useCategory = () => {
     })
     //目标：路由发生变化的时候 数据可以重新发送请求
     onBeforeRouteUpdate((to) => {
-    console.log("路由变化了")
     //onBeforeRoouteUpdate 中的 to 属性中可以获取到最新的路由 id
     getCategory(to.params.id)
     })
