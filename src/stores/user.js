@@ -24,7 +24,7 @@ export const useUserStore = defineStore(
       userInfo.value = res.result;
       //合并购物车数据
       /* arr.map(callback(currentValue[, index[, array]])[, thisArg])
-        将符合条件的元素作为一个新数组返回，不改变原数组 */
+        遍历整个数组对每个元素完成转换功能，返回一个和原数组长度相同的新数组，不修改原数组 */
       await mergeCartAPI(
         cartStore.cartList.map((item) => {
           return {
